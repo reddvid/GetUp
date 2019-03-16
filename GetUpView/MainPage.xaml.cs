@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -29,6 +30,42 @@ namespace GetUpView
             this.InitializeComponent();
 
             ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Parameter as string))
+            {
+                Debug.WriteLine(e.Parameter.ToString());
+
+                WwwFormUrlDecoder decoder = new WwwFormUrlDecoder(e.Parameter.ToString());
+
+                int fontIndex = Convert.ToInt32(decoder[0].Value);
+
+                ChangeFont(fontIndex);
+            }
+
+            base.OnNavigatedTo(e);
+        }
+
+        private void ChangeFont(int fontIndex)
+        {
+            Debug.WriteLine("Changing font: " + fontIndex);
+
+            switch (fontIndex)
+            {
+                case 0:
+                    msgTxt.FontFamily = new FontFamily("/Assets/Segoe UI Bold.ttf#Segoe UI");
+                    break;
+
+                case 1:
+                    msgTxt.FontFamily = new FontFamily("/Assets/Montserrat-Bold.ttf#Montserrat");
+                    break;
+
+                case 2:
+                    msgTxt.FontFamily = new FontFamily("/Assets/Raleway-Bold.ttf#Raleway");
+                    break;
+            }
         }
     }
 }

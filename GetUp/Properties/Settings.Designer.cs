@@ -34,5 +34,17 @@ namespace GetUp.Properties {
                 this["cbIndex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int cbFontIndex {
+            get {
+                return ((int)(this["cbFontIndex"]));
+            }
+            set {
+                this["cbFontIndex"] = value;
+            }
+        }
     }
 }

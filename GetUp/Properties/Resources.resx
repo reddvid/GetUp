@@ -121,4 +121,13 @@
   <data name="getupforlife" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\getupforlife.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Montserrat_Bold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Montserrat-Bold.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Raleway_Bold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Raleway-Bold.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Segoe_UI_Bold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Segoe UI Bold.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

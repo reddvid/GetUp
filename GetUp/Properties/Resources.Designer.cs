@@ -69,5 +69,35 @@ namespace GetUp.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Montserrat_Bold {
+            get {
+                object obj = ResourceManager.GetObject("Montserrat_Bold", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Raleway_Bold {
+            get {
+                object obj = ResourceManager.GetObject("Raleway_Bold", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Segoe_UI_Bold {
+            get {
+                object obj = ResourceManager.GetObject("Segoe_UI_Bold", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

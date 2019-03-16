@@ -136,6 +136,12 @@
     <Content Include="Assets\Raleway-Bold.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Segoe UI Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Montserrat-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="GetUpView_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

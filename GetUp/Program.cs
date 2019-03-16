@@ -25,7 +25,7 @@ namespace GetUp
         {
             bool createdNew = true;
 
-            using (Mutex mutex = new Mutex(true, "GetUpForLife", out createdNew))
+            using (Mutex mutex = new Mutex(true, "Tayô", out createdNew))
             {
                 if (createdNew)
                 {
@@ -36,7 +36,7 @@ namespace GetUp
                 }
                 else
                 {
-                    MessageBox.Show("Get Up is already running and silently lives on the taskbar notification area.", "Get Up", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Tayô is already running and silently lives on the taskbar notification area.", "Tayô", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }                        
         }
@@ -47,12 +47,14 @@ namespace GetUp
             public System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             public NotifyIcon trayIcon;
             private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-            private static readonly string StartupValue = "Get Up For Life";
+            private static readonly string StartupValue = "Tayô";
+
             private ContextMenuStrip contextMenuStrip;
             private ToolStripMenuItem toolStripCustomize = new ToolStripMenuItem();
             private ToolStripSeparator toolStripSep = new ToolStripSeparator();
             private ToolStripMenuItem toolStripAbout = new ToolStripMenuItem();
             private ToolStripMenuItem toolStripExit = new ToolStripMenuItem();
+
             public MyCustomApplicationContext()
             {
                 _Prog = this;
@@ -68,6 +70,7 @@ namespace GetUp
                 toolStripAbout.Text = "About";
                 toolStripAbout.Click += ToolStripAbout_ClickAsync;
 
+                //RemoveStartup();
                 AddRunOnStartupRegistry();
 
                 contextMenuStrip = new ContextMenuStrip()
@@ -99,7 +102,7 @@ namespace GetUp
                     ContextMenuStrip = contextMenuStrip,
                     Icon = Resources.getupforlife,
                     Visible = true,
-                    Text = "Get Up For Life"
+                    Text = "Tayô"
                 };
 
                 trayIcon.MouseDoubleClick += TrayIcon_MouseDoubleClick;
@@ -108,9 +111,9 @@ namespace GetUp
                 int index = Properties.Settings.Default.cbIndex;
 
                 int[] minutes = new int[] { 30, 60, 90, 120, 180, 5 };
-                timer.Interval = minutes[index] *  1000;
+                timer.Interval = minutes[index] * 60 * 1000;
 
-                trayIcon.Text = "Get Up For Life (" + minutes[index] + " mins)";
+                trayIcon.Text = "Tayô (" + minutes[index] + " mins)";
 
                 timer.Tick += new EventHandler(ShowNotification);
 
@@ -120,9 +123,12 @@ namespace GetUp
             private async void ShowNotification(object sender, EventArgs e)
             {
                 // Show UWP Notification
-                string str = "getupview:";
+                string str = "getupview://";
 
-                Uri uri = new Uri(str);
+                // Uri uri = new Uri(str + "location?lat=" +
+                // lat.ToString() + "&?lon=" + lon.ToString());
+
+                Uri uri = new Uri(str + "design?font=" + Properties.Settings.Default.cbFontIndex);
 
                 await Windows.System.Launcher.LaunchUriAsync(uri);
 
@@ -203,6 +209,15 @@ namespace GetUp
                 key.SetValue(StartupValue, Application.ExecutablePath.ToString());
 
                 Debug.WriteLine("Added to Startup");
+            }
+
+            private void RemoveStartup()
+            {
+                // Set the application to run at startup
+                var key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+                key.DeleteValue(Application.ExecutablePath.ToString());
+
+                Debug.WriteLine("Removed from Startup");
             }
 
             void Exit(object sender, EventArgs e)

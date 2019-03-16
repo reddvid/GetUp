@@ -2,15 +2,20 @@
     x:Class="GetUpView.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:GetUpView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:GetUpView"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" RequestedTheme="Dark"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Dark"
+    mc:Ignorable="d">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Get Up" FontSize="120" FontWeight="Bold" FontFamily="Assets/Raleway-Bold.ttf#Raleway"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock
+                x:Name="msgTxt"
+                FontSize="120"
+                FontWeight="Bold"
+                Text="Get Up" />
         </StackPanel>
     </Grid>
 </Page>

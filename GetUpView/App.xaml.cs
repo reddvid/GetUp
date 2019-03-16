@@ -34,17 +34,17 @@ namespace GetUpView
         }
 
 
-        protected override void OnActivated(IActivatedEventArgs e)
+        protected override void OnActivated(Windows.ApplicationModel.Activation.IActivatedEventArgs e)
         {
             if (e.Kind == ActivationKind.Protocol)
             {
-                var uriArgs = e as ProtocolActivatedEventArgs;
-                var uri = uriArgs.Uri;
+                ProtocolActivatedEventArgs protocolArgs = (ProtocolActivatedEventArgs)e;
+                Uri uri = protocolArgs.Uri;
                 if (uri.Scheme == "getupview")
                 {
-                    var rootFrame = new Frame();
+                    Frame rootFrame = new Frame();
                     Window.Current.Content = rootFrame;
-                    rootFrame.Navigate(typeof(MainPage), uriArgs.Uri.Host);
+                    rootFrame.Navigate(typeof(MainPage), uri.Query);
                     Window.Current.Activate();
 
                     ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
@@ -86,7 +86,7 @@ namespace GetUpView
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    // rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
