@@ -39,6 +39,11 @@
         <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png"/>
         <uap:SplashScreen Image="Images\SplashScreen.png"  BackgroundColor="#000000"/>
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol" Executable="GetUpView.exe" EntryPoint="GetUpView.App">
+          <uap:Protocol Name="getupview"/>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
