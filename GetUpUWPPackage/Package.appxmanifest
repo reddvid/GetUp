@@ -4,7 +4,8 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  IgnorableNamespaces="uap rescap uap5" >
 
   <Identity
     Name="1f51f069-3c60-4ac5-9c91-8ea4b32f282d"
@@ -30,6 +31,7 @@
     <Application Id="App"
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
+
       <uap:VisualElements
         DisplayName="Tayô"
         Description="GetUpUWPPackage"
@@ -42,9 +44,19 @@
             <uap:ShowOn Tile="wide310x150Logo"/>
           </uap:ShowNameOnTiles>
         </uap:DefaultTile >
+
         <uap:SplashScreen Image="Images\SplashScreen.png"  BackgroundColor="#000000"/>
       </uap:VisualElements>
       <Extensions>
+        <uap5:Extension
+  Category="windows.startupTask"
+  Executable="GetUp\Tayô.exe"
+  EntryPoint="Windows.FullTrustApplication">
+          <uap5:StartupTask
+            TaskId="TayôTaskId"
+            Enabled="false"
+            DisplayName="Tayô" />
+        </uap5:Extension>
         <uap:Extension Category="windows.protocol" Executable="GetUpView.exe" EntryPoint="GetUpView.App">
           <uap:Protocol Name="getupview"/>
         </uap:Extension>

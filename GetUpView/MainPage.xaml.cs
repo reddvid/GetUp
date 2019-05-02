@@ -41,8 +41,11 @@ namespace GetUpView
                 WwwFormUrlDecoder decoder = new WwwFormUrlDecoder(e.Parameter.ToString());
 
                 int fontIndex = Convert.ToInt32(decoder[0].Value);
+                string sysUptime = decoder[1].Value;
 
                 ChangeFont(fontIndex);
+
+                upTxt.Text = "System uptime: " + sysUptime;
             }
 
             base.OnNavigatedTo(e);
@@ -55,15 +58,15 @@ namespace GetUpView
             switch (fontIndex)
             {
                 case 0:
-                    msgTxt.FontFamily = new FontFamily("/Assets/Segoe UI Bold.ttf#Segoe UI");
+                    msgTxt.FontFamily = upTxt.FontFamily = new FontFamily("/Assets/Segoe UI Bold.ttf#Segoe UI");
                     break;
 
                 case 1:
-                    msgTxt.FontFamily = new FontFamily("/Assets/Montserrat-Bold.ttf#Montserrat");
+                    msgTxt.FontFamily = upTxt.FontFamily = new FontFamily("/Assets/Montserrat-Bold.ttf#Montserrat");
                     break;
 
                 case 2:
-                    msgTxt.FontFamily = new FontFamily("/Assets/Raleway-Bold.ttf#Raleway");
+                    msgTxt.FontFamily = upTxt.FontFamily = new FontFamily("/Assets/Raleway-Bold.ttf#Raleway");
                     break;
             }
         }

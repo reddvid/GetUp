@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.ApplicationModel;
+using Windows.UI.Popups;
 
 namespace GetUp
 {
@@ -38,7 +40,7 @@ namespace GetUp
                 {
                     MessageBox.Show("Tayô is already running and silently lives on the taskbar notification area.", "Tayô", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            }                        
+            }
         }
 
 
@@ -53,6 +55,7 @@ namespace GetUp
             private ToolStripMenuItem toolStripCustomize = new ToolStripMenuItem();
             private ToolStripSeparator toolStripSep = new ToolStripSeparator();
             private ToolStripMenuItem toolStripAbout = new ToolStripMenuItem();
+            private ToolStripMenuItem toolStripTest= new ToolStripMenuItem();
             private ToolStripMenuItem toolStripExit = new ToolStripMenuItem();
 
             public MyCustomApplicationContext()
@@ -70,6 +73,9 @@ namespace GetUp
                 toolStripAbout.Text = "About";
                 toolStripAbout.Click += ToolStripAbout_ClickAsync;
 
+                toolStripTest.Text = "Test";
+                toolStripTest.Click += ToolStripTest_ClickAsync;
+
                 //RemoveStartup();
                 AddRunOnStartupRegistry();
 
@@ -86,6 +92,7 @@ namespace GetUp
                     toolStripCustomize,
                     toolStripSep,
                     toolStripAbout,
+                    toolStripTest,
                     toolStripExit
                 });
 
@@ -120,20 +127,38 @@ namespace GetUp
                 timer.Start();
             }
 
+            private void ToolStripTest_ClickAsync(object sender, EventArgs e)
+            {
+                ShowNotification(sender, e);
+            }
+
             private async void ShowNotification(object sender, EventArgs e)
             {
                 // Show UWP Notification
                 string str = "getupview://";
 
+                string systemUptime = UpTime.ToString(@"d\d\:hh\h\:mm\m");
                 // Uri uri = new Uri(str + "location?lat=" +
                 // lat.ToString() + "&?lon=" + lon.ToString());
 
-                Uri uri = new Uri(str + "design?font=" + Properties.Settings.Default.cbFontIndex);
+                Uri uri = new Uri(str + "design?font=" + Properties.Settings.Default.cbFontIndex +"&uptime=" + systemUptime);
 
                 await Windows.System.Launcher.LaunchUriAsync(uri);
 
                 //trayIcon.BalloonTipText = "Get up for Life";
                 //trayIcon.ShowBalloonTip(5000);
+            }
+
+            public TimeSpan UpTime
+            {
+                get
+                {
+                    using (var uptime = new PerformanceCounter("System", "System Up Time"))
+                    {
+                        uptime.NextValue();       //Call this an extra time before reading its value
+                        return TimeSpan.FromSeconds(uptime.NextValue());
+                    }
+                }
             }
 
             private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -202,13 +227,33 @@ namespace GetUp
                 Application.Exit();
             }
 
-            private void AddRunOnStartupRegistry()
+            private async void AddRunOnStartupRegistry()
             {
                 // Set the application to run at startup
-                var key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
-                key.SetValue(StartupValue, Application.ExecutablePath.ToString());
+                //var key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+                //key.SetValue(StartupValue, Application.ExecutablePath.ToString());
 
-                Debug.WriteLine("Added to Startup");
+                //Debug.WriteLine(Application.ExecutablePath + " Added to Startup");
+
+                StartupTask startupTask = await StartupTask.GetAsync("TayôTaskId"); // Pass the task ID you specified in the appxmanifest file
+                switch (startupTask.State)
+                {
+                    case StartupTaskState.Disabled:
+                        // Task is disabled but can be enabled.
+                        StartupTaskState newState = await startupTask.RequestEnableAsync(); // ensure that you are on a UI thread when you call RequestEnableAsync()
+                        Debug.WriteLine("Request to enable startup, result = {0}", newState);
+                        break;
+                    case StartupTaskState.DisabledByUser:
+                        // Task is disabled and user must enable it manually.
+                        
+                        break;
+                    case StartupTaskState.DisabledByPolicy:
+                        Debug.WriteLine("Startup disabled by group policy, or not supported on this device");
+                        break;
+                    case StartupTaskState.Enabled:
+                        Debug.WriteLine("Startup is enabled.");
+                        break;
+                }
             }
 
             private void RemoveStartup()

@@ -15,7 +15,14 @@
                 x:Name="msgTxt"
                 FontSize="120"
                 FontWeight="Bold"
-                Text="Get Up" />
+                Text="Get Up"
+                TextAlignment="Center" />
+            <TextBlock
+                x:Name="upTxt"
+                FontSize="40"
+                FontWeight="Bold"
+                Text="System Uptime: "
+                TextAlignment="Center" />
         </StackPanel>
     </Grid>
 </Page>
