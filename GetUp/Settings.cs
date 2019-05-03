@@ -22,6 +22,10 @@ namespace GetUp
         {
             InitializeComponent();
 
+#if DEBUG
+            button1.Visible = true;
+#endif
+
             LoadComboBox();
 
             this.CenterToScreen();
@@ -135,15 +139,31 @@ namespace GetUp
 
         private async void Button1_Click(object sender, EventArgs e)
         {
+            // Show UWP Notification
             string str = "getupview://";
 
+            string systemUptime = UpTime.ToString(@"d\d\:hh\h\:mm\m");
             // Uri uri = new Uri(str + "location?lat=" +
             // lat.ToString() + "&?lon=" + lon.ToString());
 
-            Uri uri = new Uri(str + "design?font=" + cbFonts.SelectedIndex + "&?lon=");
-            Debug.WriteLine(cbFonts.SelectedIndex);
+            Uri uri = new Uri(str + "design?font=" + Properties.Settings.Default.cbFontIndex + "&uptime=" + systemUptime);
 
             await Windows.System.Launcher.LaunchUriAsync(uri);
+
+            //trayIcon.BalloonTipText = "Get up for Life";
+            //trayIcon.ShowBalloonTip(5000);
+        }
+
+        public TimeSpan UpTime
+        {
+            get
+            {
+                using (var uptime = new PerformanceCounter("System", "System Up Time"))
+                {
+                    uptime.NextValue();       //Call this an extra time before reading its value
+                    return TimeSpan.FromSeconds(uptime.NextValue());
+                }
+            }
         }
     }
 }

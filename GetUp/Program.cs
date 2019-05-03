@@ -66,12 +66,20 @@ namespace GetUp
 
                 toolStripCustomize.Text = "Settings";
                 toolStripCustomize.Click += ToolStripCustomize_Click;
+                toolStripCustomize.AutoSize = false;
+                toolStripCustomize.Size = new Size(260, 30);
+                toolStripCustomize.Margin = new Padding(0, 4, 0, 0);
 
                 toolStripExit.Text = "Quit";
                 toolStripExit.Click += ToolStripExit_Click;
+                toolStripExit.AutoSize = false;
+                toolStripExit.Size = new Size(260, 30);
+                toolStripExit.Margin = new Padding(0, 0, 0, 4);
 
                 toolStripAbout.Text = "About";
                 toolStripAbout.Click += ToolStripAbout_ClickAsync;
+                toolStripAbout.AutoSize = false;
+                toolStripAbout.Size = new Size(260, 30);
 
                 toolStripTest.Text = "Test";
                 toolStripTest.Click += ToolStripTest_ClickAsync;
@@ -84,24 +92,25 @@ namespace GetUp
                     DropShadowEnabled = false,
                     ShowCheckMargin = true,
                     ShowImageMargin = false,
-                    Size = new System.Drawing.Size(265, 170)
+                    Size = new System.Drawing.Size(465, 170)
                 };
 
                 contextMenuStrip.Items.AddRange(new ToolStripItem[]
                 {
                     toolStripCustomize,
-                    toolStripSep,
+                    //toolStripSep,
                     toolStripAbout,
-                    toolStripTest,
                     toolStripExit
                 });
 
+                var verticalPadding = 4;
                 this.contextMenuStrip.Items[0].Font = new Font(this.contextMenuStrip.Items[0].Font, FontStyle.Bold);
-
                 // Set             
-                this.contextMenuStrip.Renderer = new MyCustomRenderer();
-                this.contextMenuStrip.BackColor = Color.Transparent;
-
+                this.contextMenuStrip.Renderer = new MyCustomRenderer { VerticalPadding = verticalPadding };
+                this.contextMenuStrip.BackColor = Color.FromArgb(255, 43, 43, 43);
+                this.contextMenuStrip.ForeColor = Color.White;
+                this.contextMenuStrip.MinimumSize = new Size(240, 30);
+                this.contextMenuStrip.AutoSize = false;
 
                 // Initialize Tray Icon
                 trayIcon = new NotifyIcon()
@@ -132,7 +141,7 @@ namespace GetUp
                 ShowNotification(sender, e);
             }
 
-            private async void ShowNotification(object sender, EventArgs e)
+            public async void ShowNotification(object sender, EventArgs e)
             {
                 // Show UWP Notification
                 string str = "getupview://";
@@ -274,8 +283,62 @@ namespace GetUp
             }
         }
 
+        public class MyColorTable : ProfessionalColorTable
+        {
+            public override Color ToolStripGradientBegin
+            {
+                get { return Color.FromArgb(255, 43, 43, 43); }
+            }
+            public override Color ToolStripGradientEnd
+            {
+                get { return Color.FromArgb(255, 43, 43, 43); }
+            }
+            public override Color MenuItemBorder
+            {
+                get { return Color.FromArgb(255, 43, 43, 43); }
+            }
+            public override Color MenuItemSelected
+            {
+                get { return Color.WhiteSmoke; }
+            }
+            public override Color ToolStripDropDownBackground
+            {
+                get { return Color.FromArgb(255, 43, 43, 43); }
+            }
+            public override Color ImageMarginGradientBegin
+            {
+                get { return Color.FromArgb(255, 43, 43, 43); }
+            }
+            public override Color ImageMarginGradientMiddle
+            {
+                get { return Color.FromArgb(255, 43, 43, 43); }
+            }
+            public override Color ImageMarginGradientEnd
+            {
+                get { return Color.FromArgb(255, 43, 43, 43); }
+            }
+        }
+
         private class MyCustomRenderer : ToolStripProfessionalRenderer
         {
+            public MyCustomRenderer() : base(new MyColorTable())
+            {
+            }
+
+            public int VerticalPadding { get; set; }
+
+            protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+            {
+                if (null == e)
+                { return; }
+                e.TextFormat &= ~TextFormatFlags.HidePrefix;
+                e.TextFormat |= TextFormatFlags.VerticalCenter;
+                var rect = e.TextRectangle;
+                rect.Offset(0, VerticalPadding);
+                e.TextRectangle = rect;
+                base.OnRenderItemText(e);
+            }
+
             protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs myMenu)
             {
                 if (!myMenu.Item.Selected)
@@ -286,7 +349,7 @@ namespace GetUp
                     {
                         Rectangle menuRectangle = new Rectangle(Point.Empty, myMenu.Item.Size);
                         //Fill Color
-                        myMenu.Graphics.FillRectangle(Brushes.LightSkyBlue, menuRectangle);
+                        myMenu.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 65,65,65)), menuRectangle);
                         // Border Color
                         // myMenu.Graphics.DrawRectangle(Pens.Lime, 1, 0, menuRectangle.Width - 2, menuRectangle.Height - 1);
                     }
